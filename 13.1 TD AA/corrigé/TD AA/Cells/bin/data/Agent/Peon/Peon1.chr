@@ -1,0 +1,10 @@
+{ 	"Strength":10,
+	"Dexterity":10,
+	"Intelligence":10,
+	"Health":10,
+	"Size":1,
+	"Capability":0,
+	"MaxSpeed":200,
+	"MaxForce":50,
+	"Mass":1
+} 
