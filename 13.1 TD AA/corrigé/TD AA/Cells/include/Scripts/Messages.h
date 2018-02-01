@@ -13,6 +13,7 @@ typedef enum {
 	MSG_Timeout,
 	MSG_ChangeState,
 	MSG_Seek,
+	MSG_Flee,
 	MSG_Kill,
 	MSG_Stop,
 	MSG_GoToWithGold,

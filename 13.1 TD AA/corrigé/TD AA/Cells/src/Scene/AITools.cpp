@@ -140,9 +140,8 @@ bool AITools::onUpdate()
 	Time frameTime = TimeManager::getSingleton()->getFrameTime();
 	m_pTextFPS->setString(to_string((int)(1 / frameTime.asSeconds())) + " fps");
 
-	if (m_pGM->isKeyPressed(Key::Num0))
+	if (m_pGM->isKeyPressed(Key::Num1))
 	{
-		cout << "coucou" << endl;
 		ListEntity* entities = m_pGM->getSelectedEntities();
 		for (auto entity = entities->begin(); entity != entities->end(); ++entity)
 		{
@@ -150,6 +149,18 @@ bool AITools::onUpdate()
 
 			m_pTextCommand->setString("Seek");
 			MsgManager::getSingleton()->sendMsg(0.f, MSG_Seek, 0, entityCast->GetID(), -1);
+		}
+	}
+
+	if (m_pGM->isKeyPressed(Key::Num2))
+	{
+		ListEntity* entities = m_pGM->getSelectedEntities();
+		for (auto entity = entities->begin(); entity != entities->end(); ++entity)
+		{
+			Entity* entityCast = (Entity*)*entity;
+
+			m_pTextCommand->setString("Flee");
+			MsgManager::getSingleton()->sendMsg(0.f, MSG_Flee, 0, entityCast->GetID(), -1);
 		}
 	}
 

@@ -17,6 +17,15 @@ namespace crea
 		return m_steering * m_poids;
 	}
 
+	Vector2f& Flee::Update(double _dT)
+	{
+		m_desiredVelocity = m_entity->getPosition() - m_target->getPosition();
+		m_desiredVelocity.normalize();
+		m_desiredVelocity *= m_entity->getComponent<Agent>()->getMaxSpeed();
+		m_steering = m_desiredVelocity - m_entity->getVelocity();
+		return m_steering * m_poids;
+	}
+
 	Behaviour::~Behaviour()
 	{
 		delete m_entity;

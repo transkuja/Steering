@@ -27,5 +27,13 @@ namespace crea
 		Seek(Entity* _entity, Entity* _target) : Behaviour(_entity), m_target(_target) { };
 		Vector2f& Update(double _dT);
 	};
+
+	class CREAENGINE_API Flee : public Behaviour
+	{
+		Entity* m_target;
+	public:
+		Flee(Entity* _entity, Entity* _target) : Behaviour(_entity), m_target(_target) { };
+		Vector2f& Update(double _dT);
+	};
 }
 #endif

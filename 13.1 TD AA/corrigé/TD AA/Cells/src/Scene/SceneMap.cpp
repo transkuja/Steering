@@ -49,7 +49,7 @@ bool SceneMap::onInit()
 
 bool SceneMap::onUpdate()
 {
-	if (m_pGM->isKeyPressed(Key::Num1))
+	/*if (m_pGM->isKeyPressed(Key::Num1))
 	{
 		m_pGM->setScene(new SceneMenu());
 		return true;
@@ -58,7 +58,7 @@ bool SceneMap::onUpdate()
 	{
 		m_pGM->setScene(new SceneGame());
 		return true;
-	}
+	}*/
 
 	// AI Tools
 	if (m_bUseAITools)

@@ -10,7 +10,8 @@ enum States {
 	STATE_Spawn,
 	STATE_Live,
 	STATE_Die,
-	STATE_Seek
+	STATE_Seek,
+	STATE_Flee
 };
 
 FSMPeon::FSMPeon()
@@ -29,7 +30,9 @@ bool FSMPeon::States(StateMachineEvent _event, Msg* _msg, int _state)
 
 		OnMsg(MSG_Seek)
 			SetState(STATE_Seek);
-	
+		OnMsg(MSG_Flee)
+			SetState(STATE_Flee);
+
 		OnMsg(MSG_Die)
 			SetState(STATE_Die);		
 		
@@ -102,5 +105,16 @@ bool FSMPeon::States(StateMachineEvent _event, Msg* _msg, int _state)
 			m_pCharacterController->setAction(kAct_Walk);
 
 			m_pCharacterController->move(m_pEntity->getVelocity());
+
+			State(STATE_Flee)
+				OnEnter
+				m_pAgent->m_behaviours.clear();
+			m_pAgent->m_behaviours.push_back(new Flee(m_pEntity, GameManager::getSingleton()->getEntity("mouse")));
+
+			OnUpdate
+				m_pCharacterController->setCondition(kACond_Default);
+				m_pCharacterController->setAction(kAct_Walk);
+
+				m_pCharacterController->move(m_pEntity->getVelocity());
 EndStateMachine
 }
