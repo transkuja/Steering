@@ -169,12 +169,22 @@ bool FSMPeon::States(StateMachineEvent _event, Msg* _msg, int _state)
 		State(STATE_Arrival)
 		OnEnter
 			m_pAgent->m_behaviours.clear();
-			m_pAgent->m_behaviours.push_back(new Arrival(m_pEntity, GameManager::getSingleton()->getEntity("mouse"), 100.0f));
+			m_pAgent->m_behaviours.push_back(new Arrival(m_pEntity, GameManager::getSingleton()->getEntity("mouse"), 350.0f));
 
 		OnUpdate
 			m_pCharacterController->setCondition(kACond_Default);
 			m_pCharacterController->setAction(kAct_Walk);
 
-			m_pCharacterController->move(m_pEntity->getVelocity());
+			Vector2f targetOffset = GameManager::getSingleton()->getEntity("mouse")->getPosition() - m_pEntity->getPosition();
+			double distance = targetOffset.length();
+			if (distance < 10.0f)
+			{
+				m_pAgent->m_behaviours.clear();
+				m_pCharacterController->move(Vector2f(0, 0));
+				m_pCharacterController->setAction(kAct_Default);
+				SetState(STATE_Spawn);
+			}
+			else
+				m_pCharacterController->move(m_pEntity->getVelocity());
 EndStateMachine
 }
