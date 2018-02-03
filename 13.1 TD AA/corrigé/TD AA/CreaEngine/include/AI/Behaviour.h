@@ -53,5 +53,177 @@ namespace crea
 		Evasion(Entity* _entity, Entity* _target, float _fTmax) : Behaviour(_entity), m_target(_target), m_fTmax(_fTmax) { };
 		Vector2f& Update(double _dT);
 	};
+
+	class CREAENGINE_API Arrival : public Behaviour
+	{
+		Entity* m_target;
+		float m_fSlowingDistance;
+	public:
+		Arrival(Entity* _entity, Entity* _target, float _fSlowingDistance) : Behaviour(_entity), m_target(_target), m_fSlowingDistance(_fSlowingDistance) { };
+		Vector2f& Update(double _dT);
+	};
+
+	class CREAENGINE_API Wander : public Behaviour
+	{
+		double m_distance;
+		double m_radius;
+		double m_littleRadius;
+	public:
+		Wander(Entity* _entity, double _distance, double _radius, double _littleRadius)
+			: Behavior(_entity), m_distance(_distance), m_radius(_radius), m_littleRadius(_littleRadius) { };
+		Vector2f& Update(double _dT);
+	};
+
+	class CREAENGINE_API PathFollowing : public Behaviour
+	{
+		float m_fC;
+		double m_radius;
+		double m_farView;
+		std::vector<Obstacle*>* m_obstacles;
+	public:
+		PathFollowing(Entity* _entity, float _fC, double radius, double farView, std::vector<Obstacle*>* obstacles)
+			: Behavior(_entity), m_fC(_fC), m_radius(radius), m_farView(farView), m_obstacles(obstacles) { };
+		Vector2f& Update(double _dT);
+	};
+
+	class CREAENGINE_API UnalignedCollisionAvoidance : public Behaviour
+	{
+		double m_radius;
+		std::vector<Entity*>* m_entities;
+	public:
+		UnalignedCollisionAvoidance(Entity* _entity, double radius, std::vector<Entity*>* entities)
+			: Behavior(_entity), m_radius(radius), m_entities(entities) { };
+		Vector2f& Update(double _dT);
+	};
+
+	class CREAENGINE_API ObstacleAvoidance : public Behaviour
+	{
+		double m_radius;
+		double m_farView;
+		std::vector<Obstacle*>* m_obstacles;
+	public:
+		ObstacleAvoidance(Entity* _entity, double radius, double farView, std::vector<Obstacle*>* obstacles)
+			: Behavior(_entity), m_radius(radius), m_farView(farView), m_obstacles(obstacles) { };
+		Vector2f& Update(double _dT);
+	};
+
+	class CREAENGINE_API Separation : public Behaviour
+	{
+		double m_distanceMax;
+		std::vector<Entity*>* m_entities;
+	public:
+		Separation(Entity* _entity, double distanceMax, std::vector<Entity*>* entities)
+			: Behavior(_entity), m_distanceMax(distanceMax), m_entities(entities) { };
+		Vector2f& Update(double _dT);
+	};
+
+	class CREAENGINE_API Cohesion : public Behaviour
+	{
+		double m_distanceMax;
+		std::vector<Entity*>* m_entities;
+	public:
+		Cohesion(Entity* _entity, double distanceMax, std::vector<Entity*>* entities)
+			: Behavior(_entity), m_distanceMax(distanceMax), m_entities(entities) { };
+		Vector2f& Update(double _dT);
+	};
+
+	class CREAENGINE_API Alignment : public Behaviour
+	{
+		double m_distanceMax;
+		std::vector<Entity*>* m_entities;
+	public:
+		Alignment(Entity* _entity, double distanceMax, std::vector<Entity*>* entities)
+			: Behavior(_entity), m_distanceMax(distanceMax), m_entities(entities) { };
+		Vector2f& Update(double _dT);
+	};
+
+	class CREAENGINE_API LeadFollowing : public Behaviour
+	{
+		Entity* m_leader;
+		double m_distance;
+		double m_angle;
+		double m_distanceFlee;
+		double m_distanceArrive;
+	public:
+		LeadFollowing(Entity* _entity, Entity* _leader, double _distance, double _angle, double _distanceFlee, double _distanceArrive)
+			: Behavior(_entity), m_leader(_leader), m_distance(_distance), m_angle(_angle), m_distanceFlee(_distanceFlee), m_distanceArrive(_distanceArrive) { };
+		Vector2f& Update(double _dT);
+	};
+
+	class CREAENGINE_API Swarming : public Behaviour
+	{
+		Entity* m_target;
+		float m_fSwarmDistanceSquare;
+	public:
+		Swarming(Entity* _entity, Entity* _target, float _fSwarmDistance) : Behavior(_entity), m_target(_target), m_fSwarmDistanceSquare(_fSwarmDistance*_fSwarmDistance) { };
+		Vector2f& Update(double _dT);
+	};
+
+	class CREAENGINE_API FormationV : public Behaviour
+	{
+		Entity* m_leader;
+		bool m_bUseLeaderOrientation;
+		unsigned int m_id, m_maxId, m_nbInLine;
+		double m_distanceMax, m_slowingDistance;
+		double m_angle;
+
+	public:
+		FormationV(Entity* _entity, Entity* _leader, bool _bUseLeaderOrientation,
+			unsigned int _nbInLine, unsigned int _id, unsigned int _maxId,
+			double _distanceMax, double _slowingDistance,
+			double _angle)
+			: Behavior(_entity), m_leader(_leader), m_bUseLeaderOrientation(_bUseLeaderOrientation),
+			m_nbInLine(_nbInLine), m_id(_id), m_maxId(_maxId),
+			m_distanceMax(_distanceMax), m_slowingDistance(_slowingDistance),
+			m_angle(_angle)
+		{};
+		Vector2f& Update(double _dT);
+	};
+
+	class CREAENGINE_API FormationCircle : public Behaviour
+	{
+		Entity* m_leader;
+		bool m_bUseLeaderOrientation;
+		unsigned int m_id, m_maxId, m_nbInCircle;
+		double m_distanceMax, m_slowingDistance;
+		double m_minAngle, m_maxAngle, m_minRadius;
+
+	public:
+		FormationCircle(Entity* _entity, Entity* _leader, bool _bUseLeaderOrientation,
+			unsigned int _nbInCircle, unsigned int _id, unsigned int _maxId,
+			double _distanceMax, double _slowingDistance,
+			double _minAngle, double _maxAngle, double _minRadius)
+			: Behavior(_entity), m_leader(_leader), m_bUseLeaderOrientation(_bUseLeaderOrientation),
+			m_nbInCircle(_nbInCircle), m_id(_id), m_maxId(_maxId),
+			m_distanceMax(_distanceMax), m_slowingDistance(_slowingDistance),
+			m_minAngle(_minAngle), m_maxAngle(_maxAngle), m_minRadius(_minRadius)
+		{};
+		Vector2f& Update(double _dT);
+	};
+
+	class CREAENGINE_API FormationDynamic : public Behaviour
+	{
+		Entity* m_leader;
+		bool m_bUseLeaderOrientation;
+		unsigned int m_id, m_maxId, m_nbInCircle;
+		double m_distanceMax, m_slowingDistance;
+		double m_minAngle, m_maxAngle, m_minRadius;
+
+		double m_angleStart;
+
+	public:
+		FormationDynamic(Entity* _entity, Entity* _leader, bool _bUseLeaderOrientation,
+			unsigned int _nbInCircle, unsigned int _id, unsigned int _maxId,
+			double _distanceMax, double _slowingDistance,
+			double _minAngle, double _maxAngle, double _minRadius)
+			: Behavior(_entity), m_leader(_leader), m_bUseLeaderOrientation(_bUseLeaderOrientation),
+			m_nbInCircle(_nbInCircle), m_id(_id), m_maxId(_maxId),
+			m_distanceMax(_distanceMax), m_slowingDistance(_slowingDistance),
+			m_minAngle(_minAngle), m_maxAngle(_maxAngle), m_minRadius(_minRadius)
+		{
+			m_angleStart = 0.0f;
+		};
+		Vector2f& Update(double _dT);
+	};
 }
 #endif
