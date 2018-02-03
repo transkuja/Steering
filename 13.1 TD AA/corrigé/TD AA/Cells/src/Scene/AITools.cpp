@@ -140,51 +140,49 @@ bool AITools::onUpdate()
 	Time frameTime = TimeManager::getSingleton()->getFrameTime();
 	m_pTextFPS->setString(to_string((int)(1 / frameTime.asSeconds())) + " fps");
 
+	MSG_Name msgToSend = MSG_NULL;
+	string textCommand = "";
+
 	if (m_pGM->isKeyPressed(Key::Num1))
 	{
-		ListEntity* entities = m_pGM->getSelectedEntities();
-		for (auto entity = entities->begin(); entity != entities->end(); ++entity)
-		{
-			Entity* entityCast = (Entity*)*entity;
-
-			m_pTextCommand->setString("Seek");
-			MsgManager::getSingleton()->sendMsg(0.f, MSG_Seek, 0, entityCast->GetID(), -1);
-		}
+		textCommand = "Seek";
+		msgToSend = MSG_Seek;
 	}
 
 	if (m_pGM->isKeyPressed(Key::Num2))
 	{
-		ListEntity* entities = m_pGM->getSelectedEntities();
-		for (auto entity = entities->begin(); entity != entities->end(); ++entity)
-		{
-			Entity* entityCast = (Entity*)*entity;
-
-			m_pTextCommand->setString("Flee");
-			MsgManager::getSingleton()->sendMsg(0.f, MSG_Flee, 0, entityCast->GetID(), -1);
-		}
+		textCommand = "Flee";
+		msgToSend = MSG_Flee;
 	}
+
 
 	if (m_pGM->isKeyPressed(Key::Num3))
 	{
-		ListEntity* entities = m_pGM->getSelectedEntities();
-		for (auto entity = entities->begin(); entity != entities->end(); ++entity)
-		{
-			Entity* entityCast = (Entity*)*entity;
-
-			m_pTextCommand->setString("Pursuit");
-			MsgManager::getSingleton()->sendMsg(0.f, MSG_Pursuit, 0, entityCast->GetID(), -1);
-		}
+		textCommand = "Pursuit";
+		msgToSend = MSG_Pursuit;
 	}
 
 	if (m_pGM->isKeyPressed(Key::Num4))
 	{
+		textCommand = "Evasion";
+		msgToSend = MSG_Evasion;
+	}
+
+	if (m_pGM->isKeyPressed(Key::Num5))
+	{
+		textCommand = "Arrival";
+		msgToSend = MSG_Arrival;
+	}
+
+	if (msgToSend != MSG_NULL)
+	{
 		ListEntity* entities = m_pGM->getSelectedEntities();
 		for (auto entity = entities->begin(); entity != entities->end(); ++entity)
 		{
 			Entity* entityCast = (Entity*)*entity;
 
-			m_pTextCommand->setString("Evasion");
-			MsgManager::getSingleton()->sendMsg(0.f, MSG_Evasion, 0, entityCast->GetID(), -1);
+			m_pTextCommand->setString(textCommand);
+			MsgManager::getSingleton()->sendMsg(0.f, msgToSend, 0, entityCast->GetID(), -1);
 		}
 	}
 
@@ -410,10 +408,7 @@ bool AITools::onDraw()
 	// FPS
 	m_pTextFPS->draw();
 
-	if (m_CommandDisplayClock.getElapsedTime().asSeconds() < m_fCommandDisplayTime)
-	{
 		m_pTextCommand->draw();
-	}
 
 	// Grid
 	for (short i = m_iMin; i <= m_iMax; i++)
