@@ -63,6 +63,17 @@ namespace crea
 		Vector2f& Update(double _dT);
 	};
 
+	class CREAENGINE_API ObstacleAvoidance : public Behaviour
+	{
+		double m_radius;
+		double m_farView;
+		std::vector<Obstacle*>* m_obstacles;
+	public:
+		ObstacleAvoidance(Entity* _entity, double radius, double farView, std::vector<Obstacle*>* obstacles)
+			: Behavior(_entity), m_radius(radius), m_farView(farView), m_obstacles(obstacles) { };
+		Vector2f& Update(double _dT);
+	};
+
 	class CREAENGINE_API Wander : public Behaviour
 	{
 		double m_distance;
@@ -96,17 +107,6 @@ namespace crea
 		Vector2f& Update(double _dT);
 	};
 
-	class CREAENGINE_API ObstacleAvoidance : public Behaviour
-	{
-		double m_radius;
-		double m_farView;
-		std::vector<Obstacle*>* m_obstacles;
-	public:
-		ObstacleAvoidance(Entity* _entity, double radius, double farView, std::vector<Obstacle*>* obstacles)
-			: Behavior(_entity), m_radius(radius), m_farView(farView), m_obstacles(obstacles) { };
-		Vector2f& Update(double _dT);
-	};
-
 	class CREAENGINE_API Separation : public Behaviour
 	{
 		double m_distanceMax;
@@ -137,6 +137,15 @@ namespace crea
 		Vector2f& Update(double _dT);
 	};
 
+	class CREAENGINE_API Swarming : public Behaviour
+	{
+		Entity* m_target;
+		float m_fSwarmDistanceSquare;
+	public:
+		Swarming(Entity* _entity, Entity* _target, float _fSwarmDistance) : Behavior(_entity), m_target(_target), m_fSwarmDistanceSquare(_fSwarmDistance*_fSwarmDistance) { };
+		Vector2f& Update(double _dT);
+	};
+
 	class CREAENGINE_API LeadFollowing : public Behaviour
 	{
 		Entity* m_leader;
@@ -147,15 +156,6 @@ namespace crea
 	public:
 		LeadFollowing(Entity* _entity, Entity* _leader, double _distance, double _angle, double _distanceFlee, double _distanceArrive)
 			: Behavior(_entity), m_leader(_leader), m_distance(_distance), m_angle(_angle), m_distanceFlee(_distanceFlee), m_distanceArrive(_distanceArrive) { };
-		Vector2f& Update(double _dT);
-	};
-
-	class CREAENGINE_API Swarming : public Behaviour
-	{
-		Entity* m_target;
-		float m_fSwarmDistanceSquare;
-	public:
-		Swarming(Entity* _entity, Entity* _target, float _fSwarmDistance) : Behavior(_entity), m_target(_target), m_fSwarmDistanceSquare(_fSwarmDistance*_fSwarmDistance) { };
 		Vector2f& Update(double _dT);
 	};
 
@@ -180,6 +180,8 @@ namespace crea
 		Vector2f& Update(double _dT);
 	};
 
+	// TODO: add formation line
+
 	class CREAENGINE_API FormationCircle : public Behaviour
 	{
 		Entity* m_leader;
@@ -200,6 +202,9 @@ namespace crea
 		{};
 		Vector2f& Update(double _dT);
 	};
+
+	// TODO: add formation 2lvl
+	// TODO: add formation of formations
 
 	class CREAENGINE_API FormationDynamic : public Behaviour
 	{
