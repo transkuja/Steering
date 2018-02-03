@@ -12,10 +12,33 @@ typedef enum {
 	MSG_Randomize,
 	MSG_Timeout,
 	MSG_ChangeState,
+
+	// Steering msg
 	MSG_Seek,
 	MSG_Flee,
 	MSG_Pursuit,
 	MSG_Evasion,
+
+	MSG_Arrival,
+	MSG_ObstacleAvoidance,
+	MSG_Wander,
+	MSG_PathFollowing,
+
+	MSG_UnalignedCollisionAvoidance,
+	MSG_Separation,
+	MSG_Cohesion,
+	MSG_Alignment,
+
+	MSG_Flocking,
+	MSG_LeadFollowing,
+	MSG_FormationV,
+	MSG_FormationLine,
+
+	MSG_FormationCircle,
+	MSG_Formation2Lvl,
+	MSG_FormationOfFormations,
+	MSG_FormationDynamic,
+
 	MSG_Kill,
 	MSG_Stop,
 	MSG_GoToWithGold,

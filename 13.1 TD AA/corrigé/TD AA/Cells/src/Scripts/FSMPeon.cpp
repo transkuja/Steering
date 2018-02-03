@@ -13,7 +13,26 @@ enum States {
 	STATE_Seek,
 	STATE_Flee,
 	STATE_Pursuit,
-	STATE_Evasion
+	STATE_Evasion,
+	STATE_Arrival,
+	STATE_ObstacleAvoidance,
+	STATE_Wander,
+	STATE_PathFollowing,
+
+	STATE_UnalignedCollisionAvoidance,
+	STATE_Separation,
+	STATE_Cohesion,
+	STATE_Alignment,
+
+	STATE_Flocking,
+	STATE_LeadFollowing,
+	STATE_FormationV,
+	STATE_FormationLine,
+
+	STATE_FormationCircle,
+	STATE_Formation2Lvl,
+	STATE_FormationOfFormations,
+	STATE_FormationDynamic
 };
 
 FSMPeon::FSMPeon()
