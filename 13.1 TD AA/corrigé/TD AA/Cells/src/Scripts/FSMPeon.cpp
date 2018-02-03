@@ -57,6 +57,8 @@ bool FSMPeon::States(StateMachineEvent _event, Msg* _msg, int _state)
 			SetState(STATE_Pursuit);
 		OnMsg(MSG_Evasion)
 			SetState(STATE_Evasion);
+		OnMsg(MSG_Arrival)
+			SetState(STATE_Arrival);
 
 		OnMsg(MSG_Die)
 			SetState(STATE_Die);		
@@ -132,7 +134,7 @@ bool FSMPeon::States(StateMachineEvent _event, Msg* _msg, int _state)
 			m_pCharacterController->move(m_pEntity->getVelocity());
 
 		State(STATE_Flee)
-			OnEnter
+		OnEnter
 			m_pAgent->m_behaviours.clear();
 			m_pAgent->m_behaviours.push_back(new Flee(m_pEntity, GameManager::getSingleton()->getEntity("mouse")));
 
@@ -142,26 +144,37 @@ bool FSMPeon::States(StateMachineEvent _event, Msg* _msg, int _state)
 
 			m_pCharacterController->move(m_pEntity->getVelocity());
 
-			State(STATE_Pursuit)
-				OnEnter
-				m_pAgent->m_behaviours.clear();
-				m_pAgent->m_behaviours.push_back(new Pursuit(m_pEntity, GameManager::getSingleton()->getEntity("mouse"), 2.0f));
+		State(STATE_Pursuit)
+		OnEnter
+			m_pAgent->m_behaviours.clear();
+			m_pAgent->m_behaviours.push_back(new Pursuit(m_pEntity, GameManager::getSingleton()->getEntity("mouse"), 2.0f));
 
-			OnUpdate
-				m_pCharacterController->setCondition(kACond_Default);
-				m_pCharacterController->setAction(kAct_Walk);
+		OnUpdate
+			m_pCharacterController->setCondition(kACond_Default);
+			m_pCharacterController->setAction(kAct_Walk);
 
-				m_pCharacterController->move(m_pEntity->getVelocity());
+			m_pCharacterController->move(m_pEntity->getVelocity());
 
-			State(STATE_Evasion)
-			OnEnter
-				m_pAgent->m_behaviours.clear();
-				m_pAgent->m_behaviours.push_back(new Evasion(m_pEntity, GameManager::getSingleton()->getEntity("mouse"), 2.0f));
+		State(STATE_Evasion)
+		OnEnter
+			m_pAgent->m_behaviours.clear();
+			m_pAgent->m_behaviours.push_back(new Evasion(m_pEntity, GameManager::getSingleton()->getEntity("mouse"), 2.0f));
 
-			OnUpdate
-				m_pCharacterController->setCondition(kACond_Default);
-				m_pCharacterController->setAction(kAct_Walk);
+		OnUpdate
+			m_pCharacterController->setCondition(kACond_Default);
+			m_pCharacterController->setAction(kAct_Walk);
 
-				m_pCharacterController->move(m_pEntity->getVelocity());
+			m_pCharacterController->move(m_pEntity->getVelocity());
+
+		State(STATE_Arrival)
+		OnEnter
+			m_pAgent->m_behaviours.clear();
+			m_pAgent->m_behaviours.push_back(new Arrival(m_pEntity, GameManager::getSingleton()->getEntity("mouse"), 100.0f));
+
+		OnUpdate
+			m_pCharacterController->setCondition(kACond_Default);
+			m_pCharacterController->setAction(kAct_Walk);
+
+			m_pCharacterController->move(m_pEntity->getVelocity());
 EndStateMachine
 }
