@@ -35,5 +35,23 @@ namespace crea
 		Flee(Entity* _entity, Entity* _target) : Behaviour(_entity), m_target(_target) { };
 		Vector2f& Update(double _dT);
 	};
+
+	class CREAENGINE_API Pursuit : public Behaviour
+	{
+		Entity* m_target;
+		float m_fTmax;
+	public:
+		Pursuit(Entity* _entity, Entity* _target, float _fTmax) : Behaviour(_entity), m_target(_target), m_fTmax(_fTmax) { };
+		Vector2f& Update(double _dT);
+	};
+
+	class CREAENGINE_API Evasion : public Behaviour
+	{
+		Entity* m_target;
+		float m_fTmax;
+	public:
+		Evasion(Entity* _entity, Entity* _target, float _fTmax) : Behaviour(_entity), m_target(_target), m_fTmax(_fTmax) { };
+		Vector2f& Update(double _dT);
+	};
 }
 #endif

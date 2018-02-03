@@ -164,6 +164,30 @@ bool AITools::onUpdate()
 		}
 	}
 
+	if (m_pGM->isKeyPressed(Key::Num3))
+	{
+		ListEntity* entities = m_pGM->getSelectedEntities();
+		for (auto entity = entities->begin(); entity != entities->end(); ++entity)
+		{
+			Entity* entityCast = (Entity*)*entity;
+
+			m_pTextCommand->setString("Pursuit");
+			MsgManager::getSingleton()->sendMsg(0.f, MSG_Pursuit, 0, entityCast->GetID(), -1);
+		}
+	}
+
+	if (m_pGM->isKeyPressed(Key::Num4))
+	{
+		ListEntity* entities = m_pGM->getSelectedEntities();
+		for (auto entity = entities->begin(); entity != entities->end(); ++entity)
+		{
+			Entity* entityCast = (Entity*)*entity;
+
+			m_pTextCommand->setString("Evasion");
+			MsgManager::getSingleton()->sendMsg(0.f, MSG_Evasion, 0, entityCast->GetID(), -1);
+		}
+	}
+
 	// Selection
 	if (m_pGM->isMouseButtonPressed(Button::MouseLeft))
 	{

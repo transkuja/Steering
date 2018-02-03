@@ -14,6 +14,8 @@ typedef enum {
 	MSG_ChangeState,
 	MSG_Seek,
 	MSG_Flee,
+	MSG_Pursuit,
+	MSG_Evasion,
 	MSG_Kill,
 	MSG_Stop,
 	MSG_GoToWithGold,

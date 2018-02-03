@@ -11,7 +11,9 @@ enum States {
 	STATE_Live,
 	STATE_Die,
 	STATE_Seek,
-	STATE_Flee
+	STATE_Flee,
+	STATE_Pursuit,
+	STATE_Evasion
 };
 
 FSMPeon::FSMPeon()
@@ -32,6 +34,10 @@ bool FSMPeon::States(StateMachineEvent _event, Msg* _msg, int _state)
 			SetState(STATE_Seek);
 		OnMsg(MSG_Flee)
 			SetState(STATE_Flee);
+		OnMsg(MSG_Pursuit)
+			SetState(STATE_Pursuit);
+		OnMsg(MSG_Evasion)
+			SetState(STATE_Evasion);
 
 		OnMsg(MSG_Die)
 			SetState(STATE_Die);		
@@ -106,10 +112,32 @@ bool FSMPeon::States(StateMachineEvent _event, Msg* _msg, int _state)
 
 			m_pCharacterController->move(m_pEntity->getVelocity());
 
-			State(STATE_Flee)
+		State(STATE_Flee)
+			OnEnter
+			m_pAgent->m_behaviours.clear();
+			m_pAgent->m_behaviours.push_back(new Flee(m_pEntity, GameManager::getSingleton()->getEntity("mouse")));
+
+		OnUpdate
+			m_pCharacterController->setCondition(kACond_Default);
+			m_pCharacterController->setAction(kAct_Walk);
+
+			m_pCharacterController->move(m_pEntity->getVelocity());
+
+			State(STATE_Pursuit)
 				OnEnter
 				m_pAgent->m_behaviours.clear();
-			m_pAgent->m_behaviours.push_back(new Flee(m_pEntity, GameManager::getSingleton()->getEntity("mouse")));
+				m_pAgent->m_behaviours.push_back(new Pursuit(m_pEntity, GameManager::getSingleton()->getEntity("mouse"), 2.0f));
+
+			OnUpdate
+				m_pCharacterController->setCondition(kACond_Default);
+				m_pCharacterController->setAction(kAct_Walk);
+
+				m_pCharacterController->move(m_pEntity->getVelocity());
+
+			State(STATE_Evasion)
+			OnEnter
+				m_pAgent->m_behaviours.clear();
+				m_pAgent->m_behaviours.push_back(new Evasion(m_pEntity, GameManager::getSingleton()->getEntity("mouse"), 2.0f));
 
 			OnUpdate
 				m_pCharacterController->setCondition(kACond_Default);

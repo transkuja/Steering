@@ -179,9 +179,9 @@ namespace crea
 
 		static float radiantodegreee(float a) { return a * 57.29577951471995f; }
 
-		//static float min(float a, float b) { return a < b ? a : b; }
+		static float min(float a, float b) { return a < b ? a : b; }
 
-		//static float max(float a, float b) { return a > b ? a : b; }
+		static float max(float a, float b) { return a > b ? a : b; }
 
 	};
 
