@@ -4,7 +4,7 @@
 	"Health":10,
 	"Size":1,
 	"Capability":0,
-	"MaxSpeed":200,
+	"MaxSpeed":150,
 	"MaxForce":50,
 	"Mass":1
 } 

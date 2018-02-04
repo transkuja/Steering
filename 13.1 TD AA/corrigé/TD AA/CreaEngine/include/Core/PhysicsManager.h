@@ -25,6 +25,8 @@ namespace crea
 	class CREAENGINE_API PhysicsManager
 	{
 		MapStringCollider m_StaticColliders;
+		vector<Collider*>* m_StaticCollidersAsVector = nullptr;
+
 		MapStringCollider m_DynamicColliders;
 		MapColliderCollision2D m_Collisions2D;
 
@@ -50,6 +52,17 @@ namespace crea
 		Map* getCurrentMap();
 
 		MapStringCollider* getStaticColliders() { return &m_StaticColliders; }
+		vector<Collider*>* getStaticCollidersAsVector() { 
+			if (m_StaticCollidersAsVector == nullptr)
+			{
+				m_StaticCollidersAsVector = new vector<Collider*>();
+
+				for (auto it = m_StaticColliders.begin(); it != m_StaticColliders.end(); ++it)
+					m_StaticCollidersAsVector->push_back(it->second);
+			}
+
+			return m_StaticCollidersAsVector;
+		}
 
 		MapStringCollider* getDynamicColliders() { return &m_DynamicColliders; }
 

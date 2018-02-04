@@ -61,6 +61,70 @@ namespace crea
 		return m_steering* m_poids;
 	}
 
+	Vector2f& ObstacleAvoidance::Update(double _dT)
+	{
+		Vector2f position = m_entity->getPosition();
+		Vector2f direction = m_entity->getVelocity();
+		direction.normalize();
+
+		double distance = INFINITY;
+		double fleeDirection;
+
+		for (std::vector<Collider*>::iterator i = m_obstacles->begin(); i != m_obstacles->end(); i++)
+		{
+			if ((*i)->getIsTrigger())
+				continue;
+
+			float obstacleRadius = 0.0f;
+			Vector2f obstacleOrigin;
+
+			if ((*i)->getColliderType() == EnumColliderType::Collider_Circle)
+			{
+				CircleCollider* _circleObstacle = (CircleCollider*)*i;
+				obstacleRadius = _circleObstacle->getRadius();
+				obstacleOrigin = _circleObstacle->getCenter();
+			}
+			else if ((*i)->getColliderType() == EnumColliderType::Collider_Box)
+			{
+				BoxCollider* _boxObstacle = (BoxCollider*)*i;
+				obstacleRadius = _boxObstacle->getSize().getX() + _boxObstacle->getSize().getY();
+				obstacleOrigin = _boxObstacle->getOrigin();
+			}
+
+			Vector2f positionToObstacle = obstacleOrigin - position;
+
+			// Projection du vecteur positionToObstacle sur le vecteur direction normalisé (r) et son vecteur orthogonal (s)
+			double r = positionToObstacle.getX() * direction.getX() + positionToObstacle.getY() * direction.getY();
+			double s = positionToObstacle.getX() * direction.getY() - positionToObstacle.getY() * direction.getX();
+
+			if (r > 0
+				&& r - obstacleRadius < m_farView * m_entity->getVelocity().length() / m_entity->getComponent<Agent>()->getMaxSpeed()
+				&& r + obstacleRadius < distance
+				&& s < (m_radius + obstacleRadius)
+				&& s > -(m_radius + obstacleRadius)) {
+				distance = r - obstacleRadius;
+				fleeDirection = s;
+			}
+		}
+		if (distance == INFINITY)
+		{
+			m_steering = Vector2f(0,0);
+		}
+		else
+		{
+			direction *= m_entity->getComponent<Agent>()->getMaxForce();
+			if (fleeDirection > 0)
+			{
+				m_steering = Vector2f(-direction.getY(), direction.getX());
+			}
+			else
+			{
+				m_steering = Vector2f(direction.getY(), -direction.getX());
+			}
+		}
+		return m_steering * m_poids;
+	}
+
 	//Vector2f& Wander::Update(double _dT)
 	//{
 	//	Vector2 direction = m_entity->getVelocity();
@@ -156,50 +220,7 @@ namespace crea
 	//	return m_steering;
 	//}
 
-	//Vector2f& ObstacleAvoidance::Update(double _dT)
-	//{
-	//	Vector2 position = m_entity->getPosition();
-	//	Vector2 direction = m_entity->getVelocity();
-	//	direction.Normalize();
-
-	//	double distance = INFINITY;
-	//	double fleeDirection;
-
-	//	for (std::vector<Obstacle*>::iterator i = m_obstacles->begin(); i != m_obstacles->end(); i++)
-	//	{
-	//		Vector2 positionToObstacle = (*i)->m_position - position;
-
-	//		// Projection du vecteur positionToObstacle sur le vecteur direction normalisé (r) et son vecteur orthogonal (s)
-	//		double r = positionToObstacle.x * direction.x + positionToObstacle.y * direction.y;
-	//		double s = positionToObstacle.x * direction.y - positionToObstacle.y * direction.x;
-
-	//		if (r > 0
-	//			&& r - (*i)->m_radius < m_farView * m_entity->getVelocity().Length() / m_entity->getMaxSpeed()
-	//			&& r + (*i)->m_radius < distance
-	//			&& s < (m_radius + (*i)->m_radius)
-	//			&& s > -(m_radius + (*i)->m_radius)) {
-	//			distance = r - (*i)->m_radius;
-	//			fleeDirection = s;
-	//		}
-	//	}
-	//	if (distance == INFINITY)
-	//	{
-	//		m_steering = ORIGIN2;
-	//	}
-	//	else
-	//	{
-	//		direction *= m_entity->getMaxForce();
-	//		if (fleeDirection > 0)
-	//		{
-	//			m_steering = Vector2(-direction.y, direction.x);
-	//		}
-	//		else
-	//		{
-	//			m_steering = Vector2(direction.y, -direction.x);
-	//		}
-	//	}
-	//	return m_steering;
-	//}
+	
 
 	//Vector2f& Separation::Update(double _dT)
 	//{

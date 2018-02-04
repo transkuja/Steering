@@ -174,6 +174,12 @@ bool AITools::onUpdate()
 		msgToSend = MSG_Arrival;
 	}
 
+	if (m_pGM->isKeyPressed(Key::Num6))
+	{
+		textCommand = "ObstAvoidance";
+		msgToSend = MSG_ObstacleAvoidance;
+	}
+
 	if (msgToSend != MSG_NULL)
 	{
 		ListEntity* entities = m_pGM->getSelectedEntities();

@@ -18,13 +18,14 @@ namespace crea
 		void setOffset(Vector2f& _offset) { m_offset = _offset; };
 		virtual Vector2f& Update(double _dT) = 0;
 		inline Vector2f GetSteering() { return m_steering; };
+		inline void UpdatePoids(short _newPoids) { m_poids = _newPoids; };
 	};
 
 	class CREAENGINE_API Seek : public Behaviour
 	{
 		Entity* m_target;
 	public:
-		Seek(Entity* _entity, Entity* _target) : Behaviour(_entity), m_target(_target) { };
+		Seek(Entity* _entity, Entity* _target, short _poids = 1) : Behaviour(_entity, _poids), m_target(_target) { };
 		Vector2f& Update(double _dT);
 	};
 
@@ -32,7 +33,7 @@ namespace crea
 	{
 		Entity* m_target;
 	public:
-		Flee(Entity* _entity, Entity* _target) : Behaviour(_entity), m_target(_target) { };
+		Flee(Entity* _entity, Entity* _target, short _poids = 1) : Behaviour(_entity, _poids), m_target(_target) { };
 		Vector2f& Update(double _dT);
 	};
 
@@ -41,7 +42,7 @@ namespace crea
 		Entity* m_target;
 		float m_fTmax;
 	public:
-		Pursuit(Entity* _entity, Entity* _target, float _fTmax) : Behaviour(_entity), m_target(_target), m_fTmax(_fTmax) { };
+		Pursuit(Entity* _entity, Entity* _target, float _fTmax, short _poids = 1) : Behaviour(_entity, _poids), m_target(_target), m_fTmax(_fTmax) { };
 		Vector2f& Update(double _dT);
 	};
 
@@ -50,7 +51,7 @@ namespace crea
 		Entity* m_target;
 		float m_fTmax;
 	public:
-		Evasion(Entity* _entity, Entity* _target, float _fTmax) : Behaviour(_entity), m_target(_target), m_fTmax(_fTmax) { };
+		Evasion(Entity* _entity, Entity* _target, float _fTmax, short _poids = 1) : Behaviour(_entity, _poids), m_target(_target), m_fTmax(_fTmax) { };
 		Vector2f& Update(double _dT);
 	};
 
@@ -59,20 +60,20 @@ namespace crea
 		Entity* m_target;
 		float m_fSlowingDistance;
 	public:
-		Arrival(Entity* _entity, Entity* _target, float _fSlowingDistance) : Behaviour(_entity), m_target(_target), m_fSlowingDistance(_fSlowingDistance) { };
+		Arrival(Entity* _entity, Entity* _target, float _fSlowingDistance, short _poids = 1) : Behaviour(_entity, _poids), m_target(_target), m_fSlowingDistance(_fSlowingDistance) { };
 		Vector2f& Update(double _dT);
 	};
 
-	//class CREAENGINE_API ObstacleAvoidance : public Behaviour
-	//{
-	//	double m_radius;
-	//	double m_farView;
-	//	std::vector<Obstacle*>* m_obstacles;
-	//public:
-	//	ObstacleAvoidance(Entity* _entity, double radius, double farView, std::vector<Obstacle*>* obstacles)
-	//		: Behavior(_entity), m_radius(radius), m_farView(farView), m_obstacles(obstacles) { };
-	//	Vector2f& Update(double _dT);
-	//};
+	class CREAENGINE_API ObstacleAvoidance : public Behaviour
+	{
+		double m_radius;
+		double m_farView;
+		std::vector<Collider*>* m_obstacles;
+	public:
+		ObstacleAvoidance(Entity* _entity, double radius, double farView, std::vector<Collider*>* obstacles, short _poids = 1)
+			: Behaviour(_entity, _poids), m_radius(radius), m_farView(farView), m_obstacles(obstacles) { };
+		Vector2f& Update(double _dT);
+	};
 
 	/*class CREAENGINE_API Wander : public Behaviour
 	{
