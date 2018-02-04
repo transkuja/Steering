@@ -200,14 +200,11 @@ bool FSMPeon::States(StateMachineEvent _event, Msg* _msg, int _state)
 			m_pCharacterController->setAction(kAct_Walk);
 			if (PhysicsManager::getSingleton()->isColliding(m_pEntity->getComponent<Collider>()))
 			{
-				cout << "J'suis dans le mur putain" << endl;
-				m_pAgent->m_behaviours.at(0)->UpdatePoids(15);
-				m_pAgent->m_behaviours.at(1)->UpdatePoids(0);
+				m_pAgent->m_behaviours.at(0)->UpdatePoids(5);
 			}
 			else
 			{
 				m_pAgent->m_behaviours.at(0)->UpdatePoids(3);
-				m_pAgent->m_behaviours.at(1)->UpdatePoids(2);
 			}
 			m_pCharacterController->move(m_pEntity->getVelocity());
 EndStateMachine

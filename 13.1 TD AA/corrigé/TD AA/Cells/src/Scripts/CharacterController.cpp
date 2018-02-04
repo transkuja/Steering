@@ -136,9 +136,9 @@ bool CharacterController::update()
 		if (PhysicsManager::getSingleton()->isColliding(m_pCollider))
 		{
 			// Revert move
-			m_pEntity->move(-vAdjustedMotion * (float)crea::TimeManager::getSingleton()->getFrameTime().asSeconds());
-			m_vMotion = vAdjustedMotion = Vector2f(0.f, 0.f);
-			m_eAction = kAct_Idle;
+			//m_pEntity->move(-vAdjustedMotion * (float)crea::TimeManager::getSingleton()->getFrameTime().asSeconds());
+			/*m_vMotion = vAdjustedMotion = Vector2f(0.f, 0.f);
+			m_eAction = kAct_Idle;*/
 		}
 		// Adjust anim speed to velocity
 		m_pCurrentAnimation->adjustToTranslationSpeed(vAdjustedMotion.length());
