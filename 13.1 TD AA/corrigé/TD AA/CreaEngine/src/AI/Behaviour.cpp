@@ -125,24 +125,22 @@ namespace crea
 		return m_steering * m_poids;
 	}
 
-	//Vector2f& Wander::Update(double _dT)
-	//{
-	//	Vector2 direction = m_entity->getVelocity();
-	//	direction.Normalize();
+	Vector2f& Wander::Update(double _dT)
+	{
+		Vector2f direction = m_entity->getVelocity();
+		direction.normalize();
 
-	//	Vector2 center = direction * (m_entity->getMaxForce() - m_radius);
+		Vector2f center = direction * (m_entity->getComponent<Agent>()->getMaxForce() - m_radius);
 
-	//	double value = (double)(rand() % 360);
-	//	Vector2 r(sin(value*PI / 180.0f) * m_littleRadius, cos(value*PI / 180.0f) * m_littleRadius);
-	//	Vector2 R = m_entity->getLastR();
-	//	R += r;
-	//	R.Normalize();
-	//	R *= m_radius;
-	//	m_steering = center + R;
-	//	m_entity->setLastR(R);
+		double value = (double)(rand() % 360);
+		Vector2f r(sin(value*PI / 180.0f) * m_littleRadius, cos(value*PI / 180.0f) * m_littleRadius);
+		m_R += r;
+		m_R.normalize();
+		m_R *= m_radius;
+		m_steering = center + m_R;
 
-	//	return m_steering;
-	//}
+		return m_steering;
+	}
 
 	//Vector2f& PathFollowing::Update(double _dT)
 	//{

@@ -180,6 +180,12 @@ bool AITools::onUpdate()
 		msgToSend = MSG_ObstacleAvoidance;
 	}
 
+	if (m_pGM->isKeyPressed(Key::Num7))
+	{
+		textCommand = "Wander";
+		msgToSend = MSG_Wander;
+	}
+
 	if (msgToSend != MSG_NULL)
 	{
 		ListEntity* entities = m_pGM->getSelectedEntities();

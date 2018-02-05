@@ -75,16 +75,16 @@ namespace crea
 		Vector2f& Update(double _dT);
 	};
 
-	/*class CREAENGINE_API Wander : public Behaviour
+	class CREAENGINE_API Wander : public Behaviour
 	{
-		double m_distance;
 		double m_radius;
 		double m_littleRadius;
+		Vector2f m_R;
 	public:
-		Wander(Entity* _entity, double _distance, double _radius, double _littleRadius)
-			: Behavior(_entity), m_distance(_distance), m_radius(_radius), m_littleRadius(_littleRadius) { };
+		Wander(Entity* _entity, double _radius, double _littleRadius, short _poids = 1)
+			: Behaviour(_entity, _poids), m_radius(_radius), m_littleRadius(_littleRadius) { };
 		Vector2f& Update(double _dT);
-	};*/
+	};
 
 	/*class CREAENGINE_API PathFollowing : public Behaviour
 	{
