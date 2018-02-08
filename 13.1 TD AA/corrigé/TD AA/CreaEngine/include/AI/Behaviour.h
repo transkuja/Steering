@@ -98,15 +98,15 @@ namespace crea
 		Vector2f& Update(double _dT);
 	};
 
-	//class CREAENGINE_API UnalignedCollisionAvoidance : public Behaviour
-	//{
-	//	double m_radius;
-	//	std::vector<Entity*>* m_entities;
-	//public:
-	//	UnalignedCollisionAvoidance(Entity* _entity, double radius, std::vector<Entity*>* entities)
-	//		: Behavior(_entity), m_radius(radius), m_entities(entities) { };
-	//	Vector2f& Update(double _dT);
-	//};
+	class CREAENGINE_API UnalignedCollisionAvoidance : public Behaviour
+	{
+		double m_radius;
+		std::vector<Entity*>* m_entities;
+	public:
+		UnalignedCollisionAvoidance(Entity* _entity, double radius, std::vector<Entity*>* entities, short _poids = 1)
+			: Behaviour(_entity, _poids), m_radius(radius), m_entities(entities) { };
+		Vector2f& Update(double _dT);
+	};
 
 	//class CREAENGINE_API Separation : public Behaviour
 	//{

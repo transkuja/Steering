@@ -65,6 +65,8 @@ bool FSMPeon::States(StateMachineEvent _event, Msg* _msg, int _state)
 			SetState(STATE_Wander);
 		OnMsg(MSG_PathFollowing)
 			SetState(STATE_PathFollowing);
+		OnMsg(MSG_UnalignedCollisionAvoidance)
+			SetState(STATE_UnalignedCollisionAvoidance);
 
 		OnMsg(MSG_Die)
 			SetState(STATE_Die);		
@@ -253,5 +255,20 @@ bool FSMPeon::States(StateMachineEvent _event, Msg* _msg, int _state)
 				}
 				else
 					m_pCharacterController->move(m_pEntity->getVelocity());
+
+				State(STATE_UnalignedCollisionAvoidance)
+				OnEnter
+					std::vector<Entity*>* entities = new std::vector<Entity*>();
+					entities->push_back(GameManager::getSingleton()->getEntity("balista1"));
+
+					m_pAgent->m_behaviours.clear();
+					m_pAgent->m_behaviours.push_back(new UnalignedCollisionAvoidance(m_pEntity, 80.0f, entities, 3));
+					m_pAgent->m_behaviours.push_back(new Seek(m_pEntity, GameManager::getSingleton()->getEntity("mouse"), 2));
+
+				OnUpdate
+					m_pCharacterController->setCondition(kACond_Default);
+				m_pCharacterController->setAction(kAct_Walk);
+
+				m_pCharacterController->move(m_pEntity->getVelocity());
 EndStateMachine
 }

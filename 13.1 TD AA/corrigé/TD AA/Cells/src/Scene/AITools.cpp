@@ -193,6 +193,13 @@ bool AITools::onUpdate()
 	}
 
 
+	if (m_pGM->isKeyPressed(Key::Num9))
+	{
+		textCommand = "UnalignedCollisionAvoid";
+		msgToSend = MSG_UnalignedCollisionAvoidance;
+	}
+
+
 	if (msgToSend != MSG_NULL)
 	{
 		ListEntity* entities = m_pGM->getSelectedEntities();

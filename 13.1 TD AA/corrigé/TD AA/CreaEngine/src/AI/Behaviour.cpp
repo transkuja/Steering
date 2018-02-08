@@ -87,7 +87,7 @@ namespace crea
 			else if ((*i)->getColliderType() == EnumColliderType::Collider_Box)
 			{
 				BoxCollider* _boxObstacle = (BoxCollider*)*i;
-				obstacleRadius = _boxObstacle->getSize().getX() + _boxObstacle->getSize().getY();
+				obstacleRadius = sqrt(_boxObstacle->getSize().getX() * _boxObstacle->getSize().getX() + _boxObstacle->getSize().getY() * _boxObstacle->getSize().getY());
 				obstacleOrigin = _boxObstacle->getOrigin();
 			}
 
@@ -216,25 +216,25 @@ namespace crea
 		return m_steering * m_poids;
 	}
 
-	//Vector2f& UnalignedCollisionAvoidance::Update(double _dT)
-	//{
-	//	Vector2 nextPosition = m_entity->getPosition() + m_entity->getVelocity() / 2.0f;
-	//	Vector2 nextPosition2, diff;
-	//	m_steering = ORIGIN2;
-	//	for (std::vector<Entity*>::iterator i = m_entities->begin(); i != m_entities->end(); i++)
-	//	{
-	//		if ((*i) != m_entity)
-	//		{
-	//			nextPosition2 = (*i)->getPosition() + (*i)->getVelocity() / 2.0f;
-	//			diff = nextPosition - nextPosition2;
-	//			if (diff.Length() < m_radius)
-	//			{
-	//				m_steering += diff;
-	//			}
-	//		}
-	//	}
-	//	return m_steering;
-	//}
+	Vector2f& UnalignedCollisionAvoidance::Update(double _dT)
+	{
+		Vector2f nextPosition = m_entity->getPosition() + m_entity->getVelocity() / 2.0f;
+		Vector2f nextPosition2, diff;
+		m_steering = Vector2f(0,0);
+		for (std::vector<Entity*>::iterator i = m_entities->begin(); i != m_entities->end(); i++)
+		{
+			if ((*i) != m_entity)
+			{
+				nextPosition2 = (*i)->getPosition() + (*i)->getVelocity() / 2.0f;
+				diff = nextPosition - nextPosition2;
+				if (diff.length() < m_radius)
+				{
+					m_steering += diff;
+				}
+			}
+		}
+		return m_steering * m_poids;
+	}
 
 	
 
