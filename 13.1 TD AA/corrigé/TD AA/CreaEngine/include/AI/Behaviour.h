@@ -86,17 +86,17 @@ namespace crea
 		Vector2f& Update(double _dT);
 	};
 
-	/*class CREAENGINE_API PathFollowing : public Behaviour
+	class CREAENGINE_API PathFollowing : public Behaviour
 	{
 		float m_fC;
-		double m_radius;
-		double m_farView;
-		std::vector<Obstacle*>* m_obstacles;
+		
+		std::vector<Collider*>* m_obstacles;
 	public:
-		PathFollowing(Entity* _entity, float _fC, double radius, double farView, std::vector<Obstacle*>* obstacles)
-			: Behavior(_entity), m_fC(_fC), m_radius(radius), m_farView(farView), m_obstacles(obstacles) { };
+		bool m_isArrived = false;
+		PathFollowing(Entity* _entity, float _fC, std::vector<Collider*>* obstacles, short _poids = 1)
+			: Behaviour(_entity, _poids), m_fC(_fC), m_obstacles(obstacles) { };
 		Vector2f& Update(double _dT);
-	};*/
+	};
 
 	//class CREAENGINE_API UnalignedCollisionAvoidance : public Behaviour
 	//{

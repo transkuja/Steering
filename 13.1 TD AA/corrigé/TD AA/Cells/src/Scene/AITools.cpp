@@ -186,6 +186,13 @@ bool AITools::onUpdate()
 		msgToSend = MSG_Wander;
 	}
 
+	if (m_pGM->isKeyPressed(Key::Num8))
+	{
+		textCommand = "PathFollowing";
+		msgToSend = MSG_PathFollowing;
+	}
+
+
 	if (msgToSend != MSG_NULL)
 	{
 		ListEntity* entities = m_pGM->getSelectedEntities();

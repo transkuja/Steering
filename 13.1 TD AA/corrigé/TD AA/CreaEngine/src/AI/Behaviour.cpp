@@ -142,61 +142,79 @@ namespace crea
 		return m_steering;
 	}
 
-	//Vector2f& PathFollowing::Update(double _dT)
-	//{
-	//	Vector2 position = m_entity->getPosition() + m_entity->getVelocity() * m_fC;
-	//	double distMin = INFINITY;
-	//	std::vector<Obstacle*>::iterator j;
+	Vector2f& PathFollowing::Update(double _dT)
+	{
+		Vector2f position = m_entity->getPosition() + m_entity->getVelocity() * m_fC;
+		double distMin = INFINITY;
+		std::vector<Collider*>::iterator j;
+		CircleCollider* target = NULL;
+		std::vector<Collider*>* tmpObstacles = new std::vector<Collider*>();
 
-	//	// if no target yet
-	//	if (m_entity->pTarget == NULL)
-	//	{
-	//		// Compute closest waypoints
-	//		for (std::vector<Obstacle*>::iterator i = m_obstacles->begin(); i != m_obstacles->end(); i++)
-	//		{
-	//			Vector2 obstaclePosition = (*i)->m_position;
-	//			double dist = (position - obstaclePosition).Length();
+		for (std::vector<Collider*>::iterator i = m_obstacles->begin(); i != m_obstacles->end(); i++)
+		{
+			if ((*i)->getColliderType() == Collider_Circle && !(*i)->getIsTrigger())
+				tmpObstacles->push_back(*i);
+		}
 
-	//			if (dist < distMin) {
-	//				distMin = dist;
-	//				// take next as target (if one exist)
-	//				j = i;
-	//				j++;
-	//				if (j != m_obstacles->end())
-	//					m_entity->pTarget = *j;
-	//				else
-	//					m_entity->pTarget = *i;
-	//			}
-	//		}
-	//	}
+		// if no target yet
+		if (target == NULL)
+		{
+			// Compute closest waypoints
+			for (std::vector<Collider*>::iterator i = tmpObstacles->begin(); i != tmpObstacles->end(); i++)
+			{
+				if ((*i)->getColliderType() != Collider_Circle || (*i)->getIsTrigger())
+					continue;
+				CircleCollider* circleCollider = (CircleCollider*)(*i);
+				Vector2f obstaclePosition = circleCollider->getCenter();
+				double dist = (position - obstaclePosition).length();
 
-	//	if ((m_entity->pTarget->m_position - m_entity->getPosition()).Length() < m_entity->pTarget->m_radius)
-	//	{
-	//		// Find next waypoint
-	//		for (std::vector<Obstacle*>::iterator i = m_obstacles->begin(); i != m_obstacles->end(); i++)
-	//		{
-	//			if (*i == m_entity->pTarget)
-	//			{
-	//				// take next as target (if one exist)
-	//				j = i;
-	//				j++;
-	//				if (j != m_obstacles->end())
-	//					m_entity->pTarget = *j;
-	//				else
-	//					m_entity->pTarget = *i;
-	//				break;
-	//			}
-	//		}
-	//	}
+				if (dist < distMin) {
+					distMin = dist;
+					// take next as target (if one exist)
+					j = i;
+					j++;
+					if (j != tmpObstacles->end())
+						target = (CircleCollider*)*j;
+					else
+						target = (CircleCollider*)*i;
+				}
+			}
+		}
 
-	//	// Seek on target
-	//	m_desiredVelocity = m_entity->pTarget->m_position - m_entity->getPosition();
-	//	m_desiredVelocity.Normalize();
-	//	m_desiredVelocity *= m_entity->getMaxSpeed();
-	//	m_steering = m_desiredVelocity - m_entity->getVelocity();
+		if ((target->getCenter() - m_entity->getPosition()).length() < target->getRadius())
+		{
+			// Find next waypoint
+			for (std::vector<Collider*>::iterator i = tmpObstacles->begin(); i != tmpObstacles->end(); i++)
+			{
+				if ((*i)->getColliderType() != Collider_Circle || (*i)->getIsTrigger())
+					continue;
+				CircleCollider* circleCollider = (CircleCollider*)(*i);
 
-	//	return m_steering;
-	//}
+				if (circleCollider == target)
+				{
+					// take next as target (if one exist)
+					j = i;
+					j++;
+					if (j != tmpObstacles->end())
+						target = (CircleCollider*)*j;
+					else
+					{
+						target = (CircleCollider*)*i;
+						m_isArrived = true;
+					}
+					break;
+				}
+			}
+		}
+
+		// Seek on target
+		m_desiredVelocity = target->getCenter() - m_entity->getPosition();
+		m_desiredVelocity.normalize();
+		m_desiredVelocity *= m_entity->getComponent<Agent>()->getMaxSpeed();
+		m_steering = m_desiredVelocity - m_entity->getVelocity();
+
+		return m_steering * m_poids;
+	}
 
 	//Vector2f& UnalignedCollisionAvoidance::Update(double _dT)
 	//{

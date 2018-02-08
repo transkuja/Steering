@@ -63,6 +63,8 @@ bool FSMPeon::States(StateMachineEvent _event, Msg* _msg, int _state)
 			SetState(STATE_ObstacleAvoidance);
 		OnMsg(MSG_Wander)
 			SetState(STATE_Wander);
+		OnMsg(MSG_PathFollowing)
+			SetState(STATE_PathFollowing);
 
 		OnMsg(MSG_Die)
 			SetState(STATE_Die);		
@@ -212,14 +214,14 @@ bool FSMPeon::States(StateMachineEvent _event, Msg* _msg, int _state)
 			}
 			m_pCharacterController->move(m_pEntity->getVelocity());
 
-		State(STATE_Wander)
-		OnEnter
-			m_pAgent->m_behaviours.clear();
+			State(STATE_Wander)
+				OnEnter
+				m_pAgent->m_behaviours.clear();
 			m_pAgent->m_behaviours.push_back(new ObstacleAvoidance(m_pEntity, 32.0f, 100.0f, PhysicsManager::getSingleton()->getStaticCollidersAsVector(), 3));
 			m_pAgent->m_behaviours.push_back(new Wander(m_pEntity, 32.0f, 32.0f, 2));
 
-		OnUpdate
-			m_pCharacterController->setCondition(kACond_Default);
+			OnUpdate
+				m_pCharacterController->setCondition(kACond_Default);
 			m_pCharacterController->setAction(kAct_Walk);
 			if (PhysicsManager::getSingleton()->isColliding(m_pEntity->getComponent<Collider>()))
 			{
@@ -232,5 +234,24 @@ bool FSMPeon::States(StateMachineEvent _event, Msg* _msg, int _state)
 				m_pAgent->m_behaviours.at(1)->UpdatePoids(2);
 			}
 			m_pCharacterController->move(m_pEntity->getVelocity());
+
+
+			State(STATE_PathFollowing)
+			OnEnter
+				m_pAgent->m_behaviours.clear();
+				m_pAgent->m_behaviours.push_back(new PathFollowing(m_pEntity, 0.75f, PhysicsManager::getSingleton()->getStaticCollidersAsVector(), 3.0f));
+
+			OnUpdate
+				m_pCharacterController->setCondition(kACond_Default);
+				m_pCharacterController->setAction(kAct_Walk);
+				if (((PathFollowing*)(m_pAgent->m_behaviours.at(0)))->m_isArrived)
+				{
+					m_pAgent->m_behaviours.clear();
+					m_pCharacterController->move(Vector2f(0, 0));
+					m_pCharacterController->setAction(kAct_Default);
+					SetState(STATE_Spawn);
+				}
+				else
+					m_pCharacterController->move(m_pEntity->getVelocity());
 EndStateMachine
 }
