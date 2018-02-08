@@ -262,8 +262,8 @@ bool FSMPeon::States(StateMachineEvent _event, Msg* _msg, int _state)
 					entities->push_back(GameManager::getSingleton()->getEntity("balista1"));
 
 					m_pAgent->m_behaviours.clear();
-					m_pAgent->m_behaviours.push_back(new UnalignedCollisionAvoidance(m_pEntity, 80.0f, entities, 3));
-					m_pAgent->m_behaviours.push_back(new Seek(m_pEntity, GameManager::getSingleton()->getEntity("mouse"), 2));
+					m_pAgent->m_behaviours.push_back(new UnalignedCollisionAvoidance(m_pEntity, 120.0f, entities, 5));
+					m_pAgent->m_behaviours.push_back(new Seek(m_pEntity, GameManager::getSingleton()->getEntity("mouse"), 1));
 
 				OnUpdate
 					m_pCharacterController->setCondition(kACond_Default);

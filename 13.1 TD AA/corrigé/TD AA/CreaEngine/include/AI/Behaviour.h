@@ -68,9 +68,9 @@ namespace crea
 	{
 		double m_radius;
 		double m_farView;
-		std::vector<Collider*>* m_obstacles;
+		vector<Collider*>* m_obstacles;
 	public:
-		ObstacleAvoidance(Entity* _entity, double radius, double farView, std::vector<Collider*>* obstacles, short _poids = 1)
+		ObstacleAvoidance(Entity* _entity, double radius, double farView, vector<Collider*>* obstacles, short _poids = 1)
 			: Behaviour(_entity, _poids), m_radius(radius), m_farView(farView), m_obstacles(obstacles) { };
 		Vector2f& Update(double _dT);
 	};
