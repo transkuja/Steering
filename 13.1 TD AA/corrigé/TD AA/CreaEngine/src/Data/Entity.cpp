@@ -229,11 +229,11 @@ namespace crea
 				string szName = component["name"].asString();
 				SpriteRenderer* pSpriteRenderer = pGM->getSpriteRenderer(szName);
 
-				string szSprite = component["sprite"].asString();
-				Sprite* pSprite = pGM->getSprite(szSprite);
+				spriteName = component["sprite"].asString();
+				Sprite* pSprite = pGM->getSprite(spriteName);
 
-				string szTexture = component["image"].asString();
-				Texture* pTexture = pGM->getTexture(szTexture);
+				textureName = component["image"].asString();
+				Texture* pTexture = pGM->getTexture(textureName);
 				pSprite->setTexture(pTexture);
 
 				pSpriteRenderer->setSprite(pSprite);
@@ -278,5 +278,68 @@ namespace crea
 		}
 		return true;
 	}
+
+	Entity* Entity::cloneEntity()
+	{
+		crea::GameManager*	pGM = crea::GameManager::getSingleton();
+
+		if (getComponent<Agent>() != nullptr)
+		{
+			Agent* pAgent = pGM->getAgent(m_szName);
+			addComponent(pAgent);
+		}
+		if (getComponent<Collider>() != nullptr)
+		{
+			Collider* pCollider = pGM->getDynamicCollider(m_szName);
+			addComponent(pCollider);
+		}
+		if (getComponent<SpriteRenderer>() != nullptr)
+		{
+			SpriteRenderer* pSpriteRenderer = pGM->getSpriteRenderer(m_szName);
+
+			Sprite* pSprite = pGM->getSprite(spriteName);
+
+			Texture* pTexture = pGM->getTexture(textureName);
+			pSprite->setTexture(pTexture);
+
+			pSpriteRenderer->setSprite(pSprite);
+			addComponent(pSpriteRenderer);
+		}
+			
+		if (getComponent<Animator>() != nullptr)
+		{
+			Animator* pAnimator = pGM->getAnimator(m_szName);
+
+			Sprite* pSprite = pGM->getSprite(spriteName);
+
+			pAnimator->setSprite(pSprite);
+			addComponent(pAnimator);
+		}
+		
+		if (getComponent<ActionTable>() != nullptr)
+		{
+			ActionTable* pActionTable = pGM->getActionTable(m_szName);
+			addComponent(pActionTable);
+		}
+
+		list<Script*> scripts;
+		getComponents<Script>(scripts);
+		for (auto it = scripts.begin(); it != scripts.end(); ++it)
+		{
+			Script* pScript = pGM->getScript(m_szName);
+			addComponent(pScript);
+		}
+
+		else if (szType == "Script")
+		{
+			string szName = component["name"].asString();
+			
+		}
+		else if (szType == "Collider")
+		{
+
+		}
+	}
+
 
 } // namespace crea

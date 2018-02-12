@@ -199,6 +199,14 @@ bool AITools::onUpdate()
 		msgToSend = MSG_UnalignedCollisionAvoidance;
 	}
 
+	if (m_pGM->isKeyPressed(Key::Num0))
+	{
+		Entity* peonOriginal = m_pGM->getSingleton()->getEntity("peon1");
+
+		textCommand = "Separation";
+		msgToSend = MSG_Separation;
+
+	}
 
 	if (msgToSend != MSG_NULL)
 	{

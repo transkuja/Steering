@@ -30,6 +30,9 @@ namespace crea
 		bool m_bSelected;
 
 	public:
+		string spriteName;
+		string textureName;
+
 		Entity();
 		virtual ~Entity();
 
@@ -78,6 +81,8 @@ namespace crea
 		bool draw();
 
 		void clear();
+
+		Entity* cloneEntity();
 
 	};
 

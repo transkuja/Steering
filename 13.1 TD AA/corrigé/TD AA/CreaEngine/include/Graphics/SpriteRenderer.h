@@ -28,6 +28,7 @@ namespace crea
 
 		inline void setSprite(Sprite* _pSprite) { m_pSprite = _pSprite; }
 		void setTextureRect(IntRect* _pTextureRect) { m_pTextureRect = new IntRect(*_pTextureRect); }
+		inline Sprite* getSprite() { return m_pSprite; }
 
 		virtual bool init();
 		virtual bool update();

@@ -236,30 +236,28 @@ namespace crea
 		return m_steering * m_poids;
 	}
 
-	
-
-	//Vector2f& Separation::Update(double _dT)
-	//{
-	//	Vector2 direction;
-	//	double distance;
-	//	m_steering = ORIGIN2;
-	//	for (std::vector<Entity*>::iterator i = m_entities->begin(); i != m_entities->end(); i++)
-	//	{
-	//		if ((*i) != m_entity)
-	//		{
-	//			direction = m_entity->getPosition() - (*i)->getPosition();
-	//			distance = direction.Length();
-	//			if (distance <= m_distanceMax && distance != 0.0f)
-	//			{
-	//				direction.Normalize();
-	//				m_steering += direction * 1 / distance;
-	//			}
-	//		}
-	//	}
-	//	m_steering.Normalize();
-	//	m_steering *= m_entity->getMaxForce();
-	//	return m_steering;
-	//}
+	Vector2f& Separation::Update(double _dT)
+	{
+		Vector2f direction;
+		double distance;
+		m_steering = Vector2f(0,0);
+		for (std::vector<Entity*>::iterator i = m_entities->begin(); i != m_entities->end(); i++)
+		{
+			if ((*i) != m_entity)
+			{
+				direction = m_entity->getPosition() - (*i)->getPosition();
+				distance = direction.length();
+				if (distance <= m_distanceMax && distance != 0.0f)
+				{
+					direction.normalize();
+					m_steering += direction * 1 / distance;
+				}
+			}
+		}
+		m_steering.normalize();
+		m_steering *= m_entity->getComponent<Agent>()->getMaxForce();
+		return m_steering;
+	}
 
 	//Vector2f& Cohesion::Update(double _dT)
 	//{

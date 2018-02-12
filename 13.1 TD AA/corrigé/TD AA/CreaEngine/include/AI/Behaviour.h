@@ -108,15 +108,15 @@ namespace crea
 		Vector2f& Update(double _dT);
 	};
 
-	//class CREAENGINE_API Separation : public Behaviour
-	//{
-	//	double m_distanceMax;
-	//	std::vector<Entity*>* m_entities;
-	//public:
-	//	Separation(Entity* _entity, double distanceMax, std::vector<Entity*>* entities)
-	//		: Behavior(_entity), m_distanceMax(distanceMax), m_entities(entities) { };
-	//	Vector2f& Update(double _dT);
-	//};
+	class CREAENGINE_API Separation : public Behaviour
+	{
+		double m_distanceMax;
+		std::vector<Entity*>* m_entities;
+	public:
+		Separation(Entity* _entity, double distanceMax, std::vector<Entity*>* entities, short _poids = 1)
+			: Behaviour(_entity, _poids), m_distanceMax(distanceMax), m_entities(entities) { };
+		Vector2f& Update(double _dT);
+	};
 
 	//class CREAENGINE_API Cohesion : public Behaviour
 	//{
