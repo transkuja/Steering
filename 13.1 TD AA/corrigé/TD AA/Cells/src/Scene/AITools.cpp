@@ -202,6 +202,8 @@ bool AITools::onUpdate()
 	if (m_pGM->isKeyPressed(Key::Num0))
 	{
 		Entity* peonOriginal = m_pGM->getSingleton()->getEntity("peon1");
+		Entity* clone = peonOriginal->cloneEntity();
+		clone->setPosition(Vector2f(400, 400));
 
 		textCommand = "Separation";
 		msgToSend = MSG_Separation;

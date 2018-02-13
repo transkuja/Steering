@@ -159,13 +159,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>CREAENGINE_EXPORTS;WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\SFML-2.4.2\include;..\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\SFML-2.4.2\include;..\include</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zm150 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\SFML-2.4.2\lib\Debug</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>E:\SFML-2.4.2\lib\Debug</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics-d.lib;sfml-system-d.lib;sfml-window-d.lib;sfml-audio-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ProgramDatabaseFile>$(ProjectDir)..\lib\$(TargetName).pdb</ProgramDatabaseFile>
       <ImportLibrary>$(ProjectDir)..\lib\$(TargetName).lib</ImportLibrary>

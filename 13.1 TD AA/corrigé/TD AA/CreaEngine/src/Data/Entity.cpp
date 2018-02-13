@@ -19,6 +19,7 @@ namespace crea
 		m_pParent = nullptr;
 		m_szName = "Entity"; 
 		m_ID = 0;
+		nbrOfEntities++;
 	}
 
 	Entity::~Entity()
@@ -281,64 +282,55 @@ namespace crea
 
 	Entity* Entity::cloneEntity()
 	{
+		Entity* newEntity = new Entity();
 		crea::GameManager*	pGM = crea::GameManager::getSingleton();
 
 		if (getComponent<Agent>() != nullptr)
 		{
-			Agent* pAgent = pGM->getAgent(m_szName);
-			addComponent(pAgent);
+			Agent* pAgent = pGM->getAgent("Peon/Peon1.chr");
+			newEntity->addComponent(pAgent);
 		}
 		if (getComponent<Collider>() != nullptr)
 		{
-			Collider* pCollider = pGM->getDynamicCollider(m_szName);
-			addComponent(pCollider);
+			Collider* pCollider = pGM->getDynamicCollider("Peon/Peon.col");
+			newEntity->addComponent(pCollider);
 		}
 		if (getComponent<SpriteRenderer>() != nullptr)
 		{
-			SpriteRenderer* pSpriteRenderer = pGM->getSpriteRenderer(m_szName);
+			SpriteRenderer* pSpriteRenderer = pGM->getSpriteRenderer("Peon/Peon" + nbrOfEntities);
 
-			Sprite* pSprite = pGM->getSprite(spriteName);
+			Sprite* pSprite = pGM->getSprite("peon");
 
-			Texture* pTexture = pGM->getTexture(textureName);
+			Texture* pTexture = pGM->getTexture("..\/Image\/peon.png");
 			pSprite->setTexture(pTexture);
 
 			pSpriteRenderer->setSprite(pSprite);
-			addComponent(pSpriteRenderer);
+			newEntity->addComponent(pSpriteRenderer);
 		}
 			
 		if (getComponent<Animator>() != nullptr)
 		{
-			Animator* pAnimator = pGM->getAnimator(m_szName);
+			Animator* pAnimator = pGM->getAnimator("Peon/Peon1.animator");
 
-			Sprite* pSprite = pGM->getSprite(spriteName);
+			Sprite* pSprite = pGM->getSprite("peon");
 
 			pAnimator->setSprite(pSprite);
-			addComponent(pAnimator);
+			newEntity->addComponent(pAnimator);
 		}
 		
 		if (getComponent<ActionTable>() != nullptr)
 		{
-			ActionTable* pActionTable = pGM->getActionTable(m_szName);
-			addComponent(pActionTable);
+			ActionTable* pActionTable = pGM->getActionTable("Peon/Peon.act");
+			newEntity->addComponent(pActionTable);
 		}
 
-		list<Script*> scripts;
-		getComponents<Script>(scripts);
-		for (auto it = scripts.begin(); it != scripts.end(); ++it)
-		{
-			Script* pScript = pGM->getScript(m_szName);
-			addComponent(pScript);
-		}
+		Script* pScript = pGM->getScript("CharacterController");
+		newEntity->addComponent(pScript);
+		pScript = pGM->getScript("FSMPeon");
+		newEntity->addComponent(pScript);
 
-		else if (szType == "Script")
-		{
-			string szName = component["name"].asString();
-			
-		}
-		else if (szType == "Collider")
-		{
-
-		}
+		newEntity->setName(string("peon" + nbrOfEntities));
+		return newEntity;
 	}
 
 

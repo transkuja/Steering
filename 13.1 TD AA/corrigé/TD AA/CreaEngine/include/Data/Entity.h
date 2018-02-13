@@ -11,6 +11,7 @@
 
 namespace crea
 {
+	static int nbrOfEntities = 0;
 	class Component;
 
 	class CREAENGINE_API Entity : public Transformable // Every entity is transformable
