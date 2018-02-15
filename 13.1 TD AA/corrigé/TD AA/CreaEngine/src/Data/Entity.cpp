@@ -177,7 +177,7 @@ namespace crea
 
 	void Entity::selectEntities(FloatRect& _rect)
 	{
-		if (_rect.contains(getPosition()))
+		if (_rect.contains(getPosition()) && m_szName != "mouse")
 		{
 			m_bSelected = true;
 			EntityManager::getSingleton()->addSelectedEntity(this);
@@ -297,7 +297,10 @@ namespace crea
 		}
 		if (getComponent<SpriteRenderer>() != nullptr)
 		{
-			SpriteRenderer* pSpriteRenderer = pGM->getSpriteRenderer("Peon/Peon" + nbrOfEntities);
+			string spriteRendererName = "Peon/Peon" + nbrOfEntities;
+			spriteRendererName.append(".sr");
+			
+			SpriteRenderer* pSpriteRenderer = pGM->getSpriteRenderer(spriteRendererName);
 
 			Sprite* pSprite = pGM->getSprite("peon");
 
